@@ -27,6 +27,7 @@
                 type="text"
                 placeholder="Your Name"
                 required
+                v-model="user.username"
               />
             </fieldset>
             <fieldset class="form-group">
@@ -45,6 +46,7 @@
                 placeholder="Password"
                 v-model="user.password"
                 required
+                minlength="8"
               />
             </fieldset>
             <button
@@ -62,7 +64,9 @@
 
 <script>
 import { login, register } from "@/api/user";
+const Cookie = process.client ? require('js-cookie') : undefined
 export default {
+  middleware: 'notAuthenticated',
   name: "LoginIndex",
   computed: {
     isLogin() {
@@ -72,6 +76,7 @@ export default {
   data() {
     return {
       user: {
+        username: "",
         email: "",
         password: "",
       },
@@ -81,11 +86,17 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        const { data } = await login({
-          user: this.user,
-        });
-
+        const { data } = this.isLogin
+          ? await login({
+              user: this.user,
+            })
+          : await register({
+              user: this.user,
+            });
+        this.$store.commit("setUser", data.user);
         console.log(data);
+
+        Cookie.set('user', data.user)
         // 保存登陆状态
         this.$router.push("/");
       } catch (error) {
