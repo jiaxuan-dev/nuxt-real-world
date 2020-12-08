@@ -4,6 +4,8 @@
 
 module.exports = {
     router: {
+        // 全局配置 <nuxt-link> 组件默认的激活类名
+        linkExactActiveClass: 'active',
         // 自定义路由规则
         extendRoutes(routes, resolve) {
             // console.log(routes)

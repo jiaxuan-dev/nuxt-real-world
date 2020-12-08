@@ -9,7 +9,7 @@
           <li class="nav-item">
             <!-- Add "active" class when you're on that page" -->
             <!-- <a class="nav-link active" href="">Home</a> -->
-            <nuxt-link class="nav-link active" to="/">Home</nuxt-link>
+            <nuxt-link class="nav-link" to="/">Home</nuxt-link>
           </li>
           <li class="nav-item">
             <!-- <a class="nav-link" href="">
@@ -34,6 +34,15 @@
           <li class="nav-item">
             <!-- <a class="nav-link" href="">Sign up</a> -->
             <nuxt-link class="nav-link" to="/login">Sign in</nuxt-link>
+          </li>
+          <li class="nav-item">
+            <nuxt-link class="nav-link ng-binding" to="/profile/123">
+              <img
+                class="user-pic"
+                src="https://portrait.gitee.com/uploads/avatars/user/2495/7485433_xuanranx_1600657376.png!avatar60"
+              />
+              jiaxuan
+            </nuxt-link>
           </li>
         </ul>
       </div>
