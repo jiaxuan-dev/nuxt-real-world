@@ -21,7 +21,6 @@ export const actions = {
     // 在服务端渲染期间自动调用
     // 作用，初始化容器数据，传递数据给容器使用
     nuxtServerInit({ commit }, { req }) {
-        console.log('nuxtServerInit')
         let user = null
 
         if (req.headers.cookie) {
