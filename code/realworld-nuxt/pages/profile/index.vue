@@ -4,15 +4,20 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
-            <img src="http://i.imgur.com/Qr71crq.jpg" class="user-img" />
-            <h4>Eric Simons</h4>
+            <img :src="profile.image" class="user-img" />
+            <h4>{{ profile.username }}</h4>
             <p>
               Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda
               looks like Peeta from the Hunger Games
             </p>
-            <button class="btn btn-sm btn-outline-secondary action-btn">
+            <button @click="followUser" class="btn btn-sm btn-outline-secondary action-btn">
               <i class="ion-plus-round"></i>
-              &nbsp; Follow Eric Simons
+              &nbsp;
+              {{
+                profile.following
+                  ? `Follow ${profile.username}`
+                  : `Unfollow ${profile.username}`
+              }}
             </button>
           </div>
         </div>
@@ -82,9 +87,40 @@
 </template>
 
 <script>
+import { getProfile, followUser, unfollowUser } from "@/api/user";
 export default {
-    name: 'UserProfile',
-    middleware: 'authenticated',
+  name: "UserProfile",
+  middleware: "authenticated",
+  async asyncData({
+    isDev,
+    route,
+    store,
+    env,
+    params,
+    query,
+    req,
+    res,
+    redirect,
+    error,
+  }) {
+    const { data } = await getProfile(params.username);
+    // console.log(data);
+    const { profile } = data;
+    return {
+      profile,
+    };
+  },
+  methods: {
+    async followUser() {
+      if (this.profile.following) {
+        const { data } = await unfollowUser(this.profile.username);
+        this.profile.following = false;
+      } else {
+        const { data } = await followUser(this.profile.username);
+        this.profile.following = true;
+      }
+    },
+  },
 };
 </script>
 

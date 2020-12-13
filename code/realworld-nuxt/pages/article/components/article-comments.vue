@@ -1,16 +1,19 @@
 <template>
   <div class="col-xs-12 col-md-8 offset-md-2">
-    <form class="card comment-form">
+    <form @submit.prevent="" class="card comment-form">
       <div class="card-block">
         <textarea
           class="form-control"
           placeholder="Write a comment..."
           rows="3"
+          v-model="yourComments"
         ></textarea>
       </div>
       <div class="card-footer">
         <img :src="user.image" class="comment-author-img" />
-        <button class="btn btn-sm btn-primary">Post Comment</button>
+        <button @click="postComment" class="btn btn-sm btn-primary">
+          Post Comment
+        </button>
       </div>
     </form>
 
@@ -55,7 +58,7 @@
 </template>
 
 <script>
-import { getComments } from "@/api/article";
+import { getComments, addComment } from "@/api/article";
 import { mapState } from "vuex";
 
 export default {
@@ -72,12 +75,22 @@ export default {
   data() {
     return {
       comments: [],
+      yourComments: "",
     };
   },
   async mounted() {
     const { data } = await getComments(this.article.slug);
     // console.log(data);
     this.comments = data.comments;
+  },
+  methods: {
+    async postComment() {
+      const { data } = await addComment(this.article.slug, {
+        comment: {
+          body: this.yourComments,
+        },
+      });
+    },
   },
 };
 </script>

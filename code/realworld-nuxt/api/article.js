@@ -67,10 +67,11 @@ export const getComments = slug => {
     })
 }
 
-export const addComment = slug => {
+export const addComment = (slug, data) => {
     return request({
         method: 'POST',
         url: `/api/articles/${slug}/comments`,
+        data
     })
 }
 
